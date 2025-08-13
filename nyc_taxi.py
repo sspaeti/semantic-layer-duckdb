@@ -3,7 +3,7 @@ NYC Taxi Semantic Layer Example
 
 This example demonstrates a semantic layer for NYC taxi data using:
 - taxi_zone_lookup.csv: Zone information including borough, zone name, and service zone
-- fhvhv_tripdata_2023-05.parquet: High Volume For-Hire Vehicle trip data
+- fhvhv_tripdata_2025-06.parquet: High Volume For-Hire Vehicle trip data
 
 YAML File: `nyc_taxi.yml`
 - Defines `taxi_zones` and `fhvhv_trips` models
@@ -27,16 +27,14 @@ from boring_semantic_layer import SemanticModel
 
 con = ibis.duckdb.connect(":memory:")
 
-#locally:
 BASE_PATH = "/home/sspaeti/Documents/datalake/nyc-taxi"
 tables = {
     # local:
-    # "taxi_zones_tbl": con.read_csv(f"{BASE_PATH_CLOUD_LOOKUP}/taxi_zone_lookup.csv"),
-    # "trips_tbl": con.read_parquet(f"{BASE_PATH}/fhvhv_tripdata_2023-05.parquet"),
-    #cloud:
-    "taxi_zones_tbl": con.read_csv(f"https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv"),
-    "trips_tbl": con.read_parquet(f"https://d37ci6vzurychx.cloudfront.net/trip-data/fhvhv_tripdata_2023-05.parquet"),
-
+    # "taxi_zones_tbl": con.read_csv(f"{BASE_PATH}/taxi_zone_lookup.csv"),
+    # "trips_tbl": con.read_parquet(f"{BASE_PATH}/fhvhv_tripdata_2025-06.parquet"),
+    # cloud:
+    "taxi_zones_tbl": con.read_csv("https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv"),
+    "trips_tbl": con.read_parquet("https://d37ci6vzurychx.cloudfront.net/trip-data/fhvhv_tripdata_2025-06.parquet"),
 }
 
 
@@ -103,3 +101,53 @@ if __name__ == "__main__":
     df_access = expr_access.execute()
     print("Accessibility metrics by pickup borough:")
     print(df_access)
+
+
+    
+    # Charting example
+    png_bytes = expr.chart(
+        format="png",  # Add format parameter here
+        spec={
+            "title": {
+                "text": "NYC Taxi Trip Volume by Borough",
+                "fontSize": 16,
+                "fontWeight": "bold",
+                "anchor": "start"
+            },
+            "mark": {
+                "type": "bar",
+                "color": "#2E86AB",
+                "cornerRadiusEnd": 4
+            },
+            "encoding": {
+                "x": {
+                    "field": "pickup_zone_borough",
+                    "type": "nominal",
+                    "sort": "-y",
+                    "title": "Borough",
+                    "axis": {
+                        "labelAngle": -45,
+                        "titleFontSize": 12,
+                        "labelFontSize": 10
+                    }
+                },
+                "y": {
+                    "field": "trip_count",
+                    "type": "quantitative",
+                    "title": "Number of Trips",
+                    "axis": {
+                        "format": ".2s",
+                        "titleFontSize": 12,
+                        "labelFontSize": 10
+                    }
+                }
+            },
+            "width": 500,
+            "height": 350,
+            "background": "#FAFAFA"
+        }
+    )
+
+    # Save as file
+    with open("trip-volume-by-pickup-borough-styled.png", "wb") as f:
+        f.write(png_bytes)
