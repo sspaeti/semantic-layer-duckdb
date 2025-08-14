@@ -30,11 +30,12 @@ con = ibis.duckdb.connect(":memory:")
 BASE_PATH = "/home/sspaeti/Documents/datalake/nyc-taxi"
 tables = {
     # local:
-    # "taxi_zones_tbl": con.read_csv(f"{BASE_PATH}/taxi_zone_lookup.csv"),
-    # "trips_tbl": con.read_parquet(f"{BASE_PATH}/fhvhv_tripdata_2025-06.parquet"),
+    "taxi_zones_tbl": con.read_csv(f"{BASE_PATH}/taxi_zone_lookup.csv"),
+    "taxi_zones_tbl2": con.read_csv(f"{BASE_PATH}/taxi_zone_lookup.csv"),
+    "trips_tbl": con.read_parquet(f"{BASE_PATH}/fhvhv_tripdata_2025-06.parquet"),
     # cloud:
-    "taxi_zones_tbl": con.read_csv("https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv"),
-    "trips_tbl": con.read_parquet("https://d37ci6vzurychx.cloudfront.net/trip-data/fhvhv_tripdata_2025-06.parquet"),
+    # "taxi_zones_tbl": con.read_csv("https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv"),
+    # "trips_tbl": con.read_parquet("https://d37ci6vzurychx.cloudfront.net/trip-data/fhvhv_tripdata_2025-06.parquet"),
 }
 
 
