@@ -26,6 +26,8 @@ import ibis
 from boring_semantic_layer import SemanticModel
 
 con = ibis.duckdb.connect(":memory:")
+## Or simply change one line to switch to Cloud Version of DuckDB with MotherDuck:
+# con = ibis.duckdb.connect("md:")
 
 BASE_PATH = "/home/sspaeti/Documents/datalake/nyc-taxi"
 tables = {
