@@ -42,17 +42,32 @@ tables = {
 models = SemanticModel.from_yaml(f"nyc_taxi.yml", tables=tables)
 
 taxi_zones_sm = models["taxi_zones"]
+taxi_zones_sm2 = models["taxi_zones2"]
 trips_sm = models["fhvhv_trips"]
 
 if __name__ == "__main__":
-    print("Available dimensions (taxi_zones):", taxi_zones_sm.available_dimensions)
-    print("Available measures (taxi_zones):", taxi_zones_sm.available_measures)
+    print("Available Pickup dimensions (taxi_zones):", taxi_zones_sm.available_dimensions)
+    print("Available Pickup measures (taxi_zones):", taxi_zones_sm.available_measures)
+    print("Available Dropoff dimensions (taxi_zones):", taxi_zones_sm2.available_dimensions)
+    print("Available Dropoff measures (taxi_zones):", taxi_zones_sm2.available_measures)
+
     print("\nAvailable dimensions (fhvhv_trips):", trips_sm.available_dimensions)
     print("Available measures (fhvhv_trips):", trips_sm.available_measures)
 
     print("\n=== Trip Volume by Pickup Borough ===")
     expr = trips_sm.query(
         dimensions=["pickup_zone.borough"],
+        measures=["trip_count", "avg_trip_miles", "avg_base_fare"],
+        order_by=[("trip_count", "desc")],
+        limit=5,
+    )
+    df = expr.execute()
+    print("Top 5 boroughs by trip volume:")
+    print(df)
+
+    print("\n=== Trip Volume by Dropoff Borough ===")
+    expr = trips_sm.query(
+        dimensions=["dropoff_zone.borough"],
         measures=["trip_count", "avg_trip_miles", "avg_base_fare"],
         order_by=[("trip_count", "desc")],
         limit=5,
@@ -72,13 +87,24 @@ if __name__ == "__main__":
     print("Top 10 pickup zones by trip count:")
     print(df_zones)
 
-    print("\n=== Service Zone Analysis ===")
+    print("\n=== Service Zone Analysis Pickup ===")
     expr_service = trips_sm.query(
         dimensions=["pickup_zone.service_zone"],
         measures=["trip_count", "avg_base_fare", "avg_tips", "shared_trip_rate"],
         order_by=[("trip_count", "desc")],
     )
     df_service = expr_service.execute()
+    print("Trip metrics by service zone:")
+    print(df_service)
+
+    print("\n=== Service Zone Analysis Dropoff ===")
+    expr_service = trips_sm.query(
+        dimensions=["dropoff_zone.service_zone"],
+        measures=["trip_count", "avg_base_fare", "avg_tips", "shared_trip_rate"],
+        order_by=[("trip_count", "desc")],
+    )
+    df_service = expr_service.execute()
+
     print("Trip metrics by service zone:")
     print(df_service)
 
