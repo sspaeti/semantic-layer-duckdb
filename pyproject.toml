@@ -1,0 +1,11 @@
+[project]
+name = "semantic-layer-duckdb"
+version = "0.1.0"
+description = "Trying boring semantic layer with DuckDB"
+requires-python = ">=3.10"
+dependencies = [
+    "PyYAML",
+    "boring-semantic-layer",
+    "boring-semantic-layer[visualization]",
+    "altair[all]",
+]

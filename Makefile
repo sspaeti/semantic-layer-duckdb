@@ -3,13 +3,9 @@
 help: ## Show all Makefile targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-install:
-	pip install -r requirements.txt
+install: ## Install dependencies with uv
+	uv sync
 
-run:
-	python nyc_taxi.py
+run: ## Run the NYC taxi analysis
+	uv run python nyc_taxi.py
 
-query:
-	source ~/.venvs/boring-sl-duckdb/bin/activate && \
-	python nyc_taxi.py && \
-	deactivate

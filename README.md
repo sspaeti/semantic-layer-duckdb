@@ -2,17 +2,26 @@
 
 Trying [boring semantic layer](https://github.com/boringdata/boring-semantic-layer/) with DuckDB.
 
+## Quick Start
+
+Install [uv](https://docs.astral.sh/uv/) then run:
+```bash
+make install  # Install dependencies  | Or use `uv sync` directly
+make run      # Run NYC taxi analysis | Or use `uv run python nyc_taxi.py` directly
+```
+
 
 ## Output example
 
 
 ```
-❯ python nyc_taxi.py                                                                             boring-sl-duckdb
+❯ make run                                                                                                 8s
+uv run python nyc_taxi.py
 Available dimensions (taxi_zones): ['location_id', 'borough', 'zone', 'service_zone']
 Available measures (taxi_zones): ['zone_count']
 
-Available dimensions (fhvhv_trips): ['hvfhs_license_num', 'dispatching_base_num', 'originating_base_num', 'request_datetime', 'pickup_datetime', 'dropoff_datetime', 'trip_miles', 'trip_time', 'base_passenger_fare', 'tolls', 'bcf', 'sales_tax', 'congestion_surcharge', 'airport_fee', 'tips', 'driver_pay', 'shared_request_flag', 'shared_match_flag', 'access_a_ride_flag', 'wav_request_flag', 'wav_match_flag', 'pickup_zone.location_id', 'pickup_zone.borough', 'pickup_zone.zone', 'pickup_zone.service_zone']
-Available measures (fhvhv_trips): ['trip_count', 'avg_trip_miles', 'avg_trip_time', 'avg_base_fare', 'total_revenue', 'avg_tips', 'avg_driver_pay', 'shared_trip_rate', 'wheelchair_request_rate', 'pickup_zone.zone_count']
+Available dimensions (fhvhv_trips): ['hvfhs_license_num', 'dispatching_base_num', 'originating_base_num', 'request_datetime', 'pickup_datetime', 'dropoff_datetime', 'trip_miles', 'trip_time', 'base_passenger_fare', 'tolls', 'bcf', 'sales_tax', 'congestion_surcharge', 'airport_fee', 'tips', 'driver_pay', 'shared_request_flag', 'shared_match_flag', 'access_a_ride_flag', 'wav_request_flag', 'wav_match_flag', 'pickup_zone.location_id', 'pickup_zone.borough', 'pickup_zone.zone', 'pickup_zone.service_zone', 'dropoff_zone.location_id', 'dropoff_zone.borough', 'dropoff_zone.zone', 'dropoff_zone.service_zone']
+Available measures (fhvhv_trips): ['trip_count', 'avg_trip_miles', 'avg_trip_time', 'avg_base_fare', 'total_revenue', 'avg_tips', 'avg_driver_pay', 'shared_trip_rate', 'wheelchair_request_rate', 'pickup_zone.zone_count', 'dropoff_zone.zone_count']
 
 === Trip Volume by Pickup Borough ===
 Top 5 boroughs by trip volume:
