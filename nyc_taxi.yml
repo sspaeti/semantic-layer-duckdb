@@ -11,19 +11,6 @@ taxi_zones:
   measures:
     zone_count: _.count()
 
-taxi_zones2:
-  table: taxi_zones_tbl2
-  primary_key: LocationID
-  
-  dimensions:
-    location_id: _.LocationID
-    borough: _.Borough
-    zone: _.Zone
-    service_zone: _.service_zone
-    
-  measures:
-    zone_count: _.count()
-
 fhvhv_trips:
   table: trips_tbl
   time_dimension: pickup_datetime
@@ -68,7 +55,3 @@ fhvhv_trips:
       model: taxi_zones
       type: one
       with: _.PULocationID
-    dropoff_zone:
-      model: taxi_zones2
-      type: one
-      with: _.DOLocationID
